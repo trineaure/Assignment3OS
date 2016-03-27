@@ -9,7 +9,10 @@ import java.util.List;
 public class OptimalReplacement extends ReplacementAlgorithm {
     
     // TODO - add some state variables here, if you need any
-
+   // private int currentFrame;
+    
+    
+    
     @Override
     protected void reset() {
         // TODO - do preparation/initilization here, if needed
@@ -20,7 +23,39 @@ public class OptimalReplacement extends ReplacementAlgorithm {
         List<Integer> pageReferences = Tools.stringToArray(referenceString);
         if (pageReferences == null) return 0;
         
+       // List<Integer> notLoadedPages;
+         
         int replacements = 0; // How many page replacements made
+        int lastLoaded = 0;
+        
+        for(int page : pageReferences) {
+            
+            int currentFrame = 0;
+            
+            if(!isLoaded(page)) {
+                int longestAway = 0; //the frame that has a page longest away
+                
+                for(int frame : frames) {
+                    
+                    for(int i = lastLoaded; i < pageReferences.size(); i++) {
+                        
+                        int tempPage = pageReferences.get(i);
+                        
+                       if((frame == tempPage) && (i > longestAway)) {
+                           longestAway = i;
+                           
+                           currentFrame = frame;
+                       }
+                    }
+                    
+                }
+                pageIn(currentFrame, page);
+                lastLoaded = page;
+                replacements++;
+            } //pageReferences.get(longestAway)555555
+            
+        }
+        
         
         // TODO - process the reference string here. You can see FIFOReplacement
         // as an example. But remember, that FIFO uses a different algorithm.
