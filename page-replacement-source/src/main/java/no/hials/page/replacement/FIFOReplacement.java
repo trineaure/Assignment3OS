@@ -32,7 +32,7 @@ public class FIFOReplacement extends ReplacementAlgorithm {
             if (!isLoaded(page)) {
                 // Page it in (load it)
                 if (pageIn(currentFrame, page)) {
-                    // If there was a page replacement, register it
+                    // If there was a page replacement, register it5555
                     replacements++;
                 }
                 moveCurrentPointer();

@@ -3,72 +3,81 @@ package no.hials.page.replacement;
 import java.util.List;
 
 /**
- * Optimal Replacement algorithm
- * Fill in your code in this class!
+ * Optimal Replacement algorithm Fill in your code in this class!
  */
 public class OptimalReplacement extends ReplacementAlgorithm {
-    
+
     // TODO - add some state variables here, if you need any
-   // private int currentFrame;
-    
-    
-    
+    private int currentFrame;
+
     @Override
     protected void reset() {
         // TODO - do preparation/initilization here, if needed
     }
-    
+
     @Override
     public int process(String referenceString) {
         List<Integer> pageReferences = Tools.stringToArray(referenceString);
-        if (pageReferences == null) return 0;
-        
+        if (pageReferences == null) {
+            return 0;
+        }
+
        // List<Integer> notLoadedPages;
-         
         int replacements = 0; // How many page replacements made
         int lastLoaded = 0;
-        
-        for(int page : pageReferences) {
-            
-    
-            
-            int currentFrame = 0;
-            
-            if(!isLoaded(page)) {
-                int longestAway = 0; //the frame that has a page longest away
-                
-                for(int frame : frames) {
-                    
-                    for(int i = lastLoaded; i < pageReferences.size(); i++) {
-                        
-                        int tempPage = pageReferences.get(i);
-                        
-                       if((frame == tempPage) && (i >= longestAway)) {
-                           longestAway = i;
-                           
-                           currentFrame = frame;
-                       }
-                    }
-                    
+        currentFrame = 0;
+
+        for (int i = 0; i < pageReferences.size(); i++) {
+            int page = pageReferences.get(i);
+
+            if (!isLoaded(page)) {
+
+                test(pageReferences, page, i);
+
+                if (pageIn(currentFrame, page)) {
+                    replacements++;
                 }
-                if(pageIn(currentFrame, page)) {
-                  replacements++;
-                }
-                lastLoaded = page;
-             
-            } //pageReferences.get(longestAway)55555
-            
+                System.out.println(getFrameStatus());
+            }
         }
-        
-        
-        // TODO - process the reference string here. You can see FIFOReplacement
-        // as an example. But remember, that FIFO uses a different algorithm.
-        // This class should use Optimal Replacement algorithm, described
-        // in Section 9.4.
-        // Get the reference list as an array
-       
         return replacements;
     }
 
-    // TODO - create any helper methods here if you need any
+    public void test(List<Integer> pageReferences, int page, int current) {
+
+        int longestAway = 0;
+        for (int i = 0; i < frames.length; i++) {
+            if (frames[i] == -1) {
+                currentFrame = i;
+                return;
+            }
+        }
+
+        for (int i = 0; i < frames.length; i++) {
+            boolean nextFound = false;
+            for (int x = current; x < pageReferences.size(); x++) {
+
+                int tempPage = pageReferences.get(x);
+
+                if (frames[i] == tempPage) {
+                    nextFound = true;
+                    if (x >= longestAway) {
+                        longestAway = x;
+                        currentFrame = i;
+                    }
+                } else {
+                    if(x == (pageReferences.size() - 1)) {
+                        currentFrame = i;
+                        return;
+                    } 
+                }
+            }
+            if (nextFound) {
+                break;
+            }
+        }
+
+    }
 }
+    // TODO - create any helper methods here if you need any
+
