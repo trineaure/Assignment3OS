@@ -21,7 +21,7 @@ public abstract class ReplacementAlgorithm {
     
     /**
      * Process reference string containing virtual page references
-     * The algorithm should return total number of page replacements made
+     * The algorithm should return total 55number of page replacements made
      * (not including the initial page faults which just load page into RAM
      * without replacing anything)
      * 

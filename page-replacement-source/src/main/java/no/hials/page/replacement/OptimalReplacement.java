@@ -30,6 +30,8 @@ public class OptimalReplacement extends ReplacementAlgorithm {
         
         for(int page : pageReferences) {
             
+    
+            
             int currentFrame = 0;
             
             if(!isLoaded(page)) {
@@ -41,7 +43,7 @@ public class OptimalReplacement extends ReplacementAlgorithm {
                         
                         int tempPage = pageReferences.get(i);
                         
-                       if((frame == tempPage) && (i > longestAway)) {
+                       if((frame == tempPage) && (i >= longestAway)) {
                            longestAway = i;
                            
                            currentFrame = frame;
@@ -49,10 +51,12 @@ public class OptimalReplacement extends ReplacementAlgorithm {
                     }
                     
                 }
-                pageIn(currentFrame, page);
+                if(pageIn(currentFrame, page)) {
+                  replacements++;
+                }
                 lastLoaded = page;
-                replacements++;
-            } //pageReferences.get(longestAway)555555
+             
+            } //pageReferences.get(longestAway)55555
             
         }
         
