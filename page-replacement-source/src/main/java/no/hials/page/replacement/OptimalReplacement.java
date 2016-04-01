@@ -30,9 +30,7 @@ public class OptimalReplacement extends ReplacementAlgorithm {
             int page = pageReferences.get(i);
             //Checks if the page is allready loaded in one of the frames
             if (!isLoaded(page)) {
-                //Tests which one of the frames who has a page which is not uesd 
-                //for the longest time
-                test(pageReferences, page, i);
+                test(pageReferences, i);
                 //Replaces one of the pages with the new page
                 if (pageIn(currentFrame, page)) {
                     replacements++;
@@ -45,47 +43,52 @@ public class OptimalReplacement extends ReplacementAlgorithm {
 
     
     /**
+    * Tests which one of the frames who has a page which is not used 
+    * for the longest time
     * @param pageReferences The list of incoming pages
-    * @param page The current page which is not loaded
     * @param current The current position in the list
     */
-    public void test(List<Integer> pageReferences, int page, int current) {
-
+    public void test(List<Integer> pageReferences, int current) {
         int longestAway = 0;
         //Checks if some of the frames are empty
-        for (int i = 0; i < frames.length; i++) {
-            if (frames[i] == -1) {
-                currentFrame = i;
-                return;
-            }
+        if(emptyFrameCheck()) {
+            return;
         }
         //If all frames are used
         for (int i = 0; i < frames.length; i++) {
-     
             for (int x = current; x < pageReferences.size(); x++) {
 
                 int tempPage = pageReferences.get(x);
-
-                if (frames[i] == tempPage) {
-                  
+                
+                if (frames[i] == tempPage) { 
                     if (x > longestAway) {
                         longestAway = x;
-                        currentFrame = i;
-                        
+                        currentFrame = i; 
                     }
                     break;
-                } else {
-                    //If the page in the current fram is not used later, then
-                    //this is the frame which gets switched out
-                    if(x == (pageReferences.size() - 1)) {
-                        currentFrame = i;
-                        return;
-                    } 
+                }  
+                //If the page in the current fram is not used later, then
+                //this is the frame which gets switched out
+                else if(x == (pageReferences.size() - 1)) {
+                    currentFrame = i;
+                    return;
                 }
             }
-  
         }
-
+    }
+    
+     /**
+      * Checks if some of the frames are empty
+      * @return True if frame is empty, and false if not
+      */
+    public boolean emptyFrameCheck() {
+        for (int i = 0; i < frames.length; i++) {
+            if (frames[i] == -1) {
+                currentFrame = i;
+                return true;
+            }
+        }
+        return false;
     }
 }
 
